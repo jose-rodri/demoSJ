@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>214789599967-um9vhi2ihikurb3aqf9ho1hoknoh42l0.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.214789599967-um9vhi2ihikurb3aqf9ho1hoknoh42l0</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDCQMYjx44fbY-TLfzydDmIj8nDumsaiIs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>214789599967</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.everis.RHS.pro</string>
+	<key>PROJECT_ID</key>
+	<string>remote-health-services</string>
+	<key>STORAGE_BUCKET</key>
+	<string>remote-health-services.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:214789599967:ios:8d35b9adae07097e532f6a</string>
+	<key>DATABASE_URL</key>
+	<string>https://remote-health-services.firebaseio.com</string>
+</dict>
+</plist>

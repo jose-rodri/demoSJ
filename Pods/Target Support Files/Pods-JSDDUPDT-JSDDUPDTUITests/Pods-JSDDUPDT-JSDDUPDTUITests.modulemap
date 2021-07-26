@@ -1,0 +1,6 @@
+framework module Pods_JSDDUPDT_JSDDUPDTUITests {
+  umbrella header "Pods-JSDDUPDT-JSDDUPDTUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

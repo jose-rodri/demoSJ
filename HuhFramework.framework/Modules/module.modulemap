@@ -1,0 +1,9 @@
+framework module HuhFramework {
+    umbrella header "HuhFramework.h"
+    export *
+}
+
+module HuhFramework.Swift {
+    header "HuhFramework-Swift.h"
+    requires objc
+}

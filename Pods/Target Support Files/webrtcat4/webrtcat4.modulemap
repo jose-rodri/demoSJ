@@ -1,0 +1,6 @@
+framework module webrtcat4 {
+  umbrella header "webrtcat4-umbrella.h"
+
+  export *
+  module * { export * }
+}

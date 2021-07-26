@@ -1,0 +1,19 @@
+{
+  "name": "LifevitSDK",
+  "version": "2.1.0",
+  "authors": "Lifevit S.L",
+  "license": {
+    "type": "Commercial",
+    "text": "See https://www.lifevit.es/terms/publisher"
+  },
+  "homepage": "https://www.lifevit.es",
+  "summary": "Lifevit SDK",
+  "source": {
+    "http": "https://cocoapods.lifevit.es/LifevitSDK.framework.2.1.0.zip"
+  },
+  "vendored_frameworks": "LifevitSDK.framework",
+  "platforms": {
+    "ios": "10.3"
+  },
+  "requires_arc": true
+}

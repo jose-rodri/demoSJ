@@ -1,0 +1,246 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.1 effective-4.2 (swiftlang-1200.0.41 clang-1200.0.32.8)
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -Onone -module-name HuhFramework
+import CoreBluetooth
+import Foundation
+@_exported import HuhFramework
+import LifevitSDK
+import Swift
+import UIKit
+@_hasMissingDesignatedInitializers public class HuhJsonParser {
+  public class func createJson(fromDict dict: [Swift.String : Any]) -> Swift.String
+  public class func parse(data: [Swift.String : Any], forDate date: Foundation.Date, uuid: Swift.String, deviceInfo: HuhFramework.HuhDeviceInformation?) -> [Swift.String : Any]
+  public class func parse(data: [Any], forDate date: Foundation.Date = Date(), forUUID uuid: Swift.String, withDeviceInformation: HuhFramework.HuhDeviceInformation?) -> [Swift.String : Any]
+  @objc deinit
+}
+public protocol HuhDelegate : ObjectiveC.NSObject, HuhFramework.HuhLoggerDelegate {
+  func fail(withError error: HuhFramework.HuhError)
+  func dataWasRead(data: [Swift.String : Any])
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class HuhBleConnectivity : ObjectiveC.NSObject {
+  weak public var delegate: HuhFramework.HuhDelegate?
+  public var defaultTimeout: Swift.Int
+  public static var logToFile: Swift.Bool
+  public convenience init(withDelegate delegate: HuhFramework.HuhDelegate, defaultTimeout: Swift.Int = HuhConstants.Defaults.CBScanTimeout, andUIApplicationBluetoothCentralsKey lauchOptions: [UIKit.UIApplication.LaunchOptionsKey] = [], logToFile: Swift.Bool = true)
+  public func stop(_ deviceType: HuhFramework.DeviceType)
+  public func stop()
+  public func start(withDeviceType deviceType: HuhFramework.DeviceType)
+  public func start()
+  @objc deinit
+}
+extension HuhBleConnectivity : CoreBluetooth.CBCentralManagerDelegate {
+  @objc dynamic public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDisconnectPeripheral peripheral: CoreBluetooth.CBPeripheral, error: Swift.Error?)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDiscover peripheral: CoreBluetooth.CBPeripheral, advertisementData: [Swift.String : Any], rssi RSSI: Foundation.NSNumber)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didConnect peripheral: CoreBluetooth.CBPeripheral)
+}
+extension HuhBleConnectivity : HuhFramework.HuhDeviceDelegate {
+  public func fail(error: Swift.String)
+  public func dataWasRead(data: [Swift.String : Any])
+}
+extension HuhBleConnectivity : HuhFramework.HuhLifevitDeviceDelegate {
+  public func lifevitDidFail(error: Swift.String)
+  public func lifevitDataWasRead(data: [Swift.String : Any])
+}
+public struct HuhConstants {
+  public enum Characteristics {
+    public struct DeviceInfo {
+      public static var ModelNumberCBUUID: CoreBluetooth.CBUUID
+      public static var SerialNumberCBUUID: CoreBluetooth.CBUUID
+      public static var FirmwareRevisionCBUUID: CoreBluetooth.CBUUID
+      public static var HardwareRevisionCBUUID: CoreBluetooth.CBUUID
+      public static var SoftwareRevisionCBUUID: CoreBluetooth.CBUUID
+      public static var ManufacturerNameCBUUID: CoreBluetooth.CBUUID
+      public static var BatteryLevelCBUUID: CoreBluetooth.CBUUID
+      public static var PnpIdCBUUID: CoreBluetooth.CBUUID
+      public static var RegulatoryCertificationDataListCBUUID: CoreBluetooth.CBUUID
+      public static var SystemIdCBUUID: CoreBluetooth.CBUUID
+    }
+  }
+  public enum Defaults {
+    public static var CBScanTimeout: Swift.Int
+    public static var LifevitTimeout: Swift.Int32
+  }
+}
+public enum HuhError {
+  case poweredOff
+  case unsupported
+  case unauthorized
+  case generic
+  case disconnected
+  case other(error: Swift.String)
+}
+public protocol HuhLoggerDelegate : AnyObject {
+  func log(msg: Swift.String)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class HuhLogger : ObjectiveC.NSObject {
+  weak public var delegate: HuhFramework.HuhLoggerDelegate?
+  public static var shared: HuhFramework.HuhLogger
+  public func logInfo(msg: Swift.String)
+  public func logError(msg: Swift.String)
+  public func logWarn(msg: Swift.String)
+  @objc deinit
+}
+public protocol HuhLifevitDeviceDelegate : ObjectiveC.NSObject {
+  func lifevitDataWasRead(data: [Swift.String : Any])
+  func lifevitDidFail(error: Swift.String)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class HuhLifevitManager : ObjectiveC.NSObject {
+  weak public var delegate: HuhFramework.HuhLifevitDeviceDelegate?
+  public convenience init(withUIApplicationBluetoothCentralsKey btId: [UIKit.UIApplication.LaunchOptionsKey] = [], defaultTimeout: Swift.Int32 = HuhConstants.Defaults.LifevitTimeout)
+  public func connect(_ device: Swift.Int32)
+  public func connectDevices()
+  public func stopScanAndDisconnect()
+  public func stopScanAndDisconnect(device: Swift.Int32)
+  public class func lifevitDevice(forDeviceType deviceType: HuhFramework.DeviceType) -> Swift.Int32
+  public class func isDeviceLifevit(_ device: HuhFramework.DeviceType) -> Swift.Bool
+  @objc deinit
+}
+extension HuhLifevitManager : LifevitSDK.LifevitHeartDelegate {
+  @objc dynamic public func heartDevice(onProgressMeasurement pulse: Swift.Int32)
+  @objc dynamic public func heartDevice(onResult data: LifevitSDK.LifevitSDKHeartData?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitOximeterDelegate {
+  @objc dynamic public func oximeterDevice(onProgressMeasurement data: LifevitSDK.LifevitSDKOximeterData?)
+  @objc dynamic public func oximeterDevice(onResult data: LifevitSDK.LifevitSDKOximeterData?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitThermometerDelegate {
+  @objc dynamic public func thermometer(onResult data: LifevitSDK.LifevitSDKThermometerData?)
+  @objc dynamic public func thermometer(onSuccessCommand data: LifevitSDK.LifevitSDKThermometerSuccessData?)
+  @objc dynamic public func thermometer(onError errorCode: Swift.Int32)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitWeightScaleDelegate {
+  @objc dynamic public func weightscale(onMeasurementResult data: LifevitSDK.LifevitSDKWeightScaleData?)
+  @objc dynamic public func weightscale(onResult data: LifevitSDK.LifevitSDKWeightScaleData?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitTensioBraceletDelegate {
+  @objc dynamic public func tensioBraceletInformation(_ data: Any?)
+  @objc dynamic public func tensioBraceletRequestExecuted(_ request: LifevitSDK.TensioBraceletRequest)
+  @objc dynamic public func tensioBracelet(onProgressMeasurement pulse: Swift.Int32)
+  @objc dynamic public func tensioBracelet(onResult data: LifevitSDK.LifevitSDKTensioBraceletData?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitBraceletAT250Delegate {
+  @objc dynamic public func braceletSyncReceived(_ data: LifevitSDK.LifevitSDKBraceletData?)
+  @objc dynamic public func braceletCurrentStepsReceived(_ data: LifevitSDK.LifevitSDKStepData?)
+  @objc dynamic public func operationFinished(_ success: Swift.Bool)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitBraceletDelegate {
+  @objc dynamic public func braceletBeepReceived()
+  @objc dynamic public func braceletActivityStarted()
+  @objc dynamic public func braceletActivityFinished()
+  @objc dynamic public func braceletBatteryReceived(_ battery: Swift.Int32)
+  @objc dynamic public func braceletParameterSet(_ parameter: Swift.Int32)
+  @objc dynamic public func braceletActivityStepsReceived(_ steps: Swift.Int32)
+  @objc dynamic public func braceletHeartDataReceived(_ data: LifevitSDK.LifevitSDKHeartBeatData?)
+  @objc dynamic public func braceletInfoReceived(_ info: Swift.String?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitBabyThermometerDelegate {
+  @objc dynamic public func babyThermometer(onResult data: LifevitSDK.LifevitSDKBabyThermometerData?)
+}
+extension HuhLifevitManager : LifevitSDK.LifevitDeviceDelegate {
+  @objc dynamic public func device(_ device: Swift.Int32, onConnectionChanged status: Swift.Int32)
+  @objc dynamic public func device(_ device: Swift.Int32, onConnectionError error: Swift.Int32)
+  public class func getLifevitDeviceName(device: Swift.Int32) -> Swift.String
+}
+@objc @_inheritsConvenienceInitializers public class MediasanaBU575 : HuhFramework.HuhDevice {
+  override public class func identifier() -> Swift.String
+  public enum Characteristics {
+    public static var bloodPressureMeasurementCBUUID: CoreBluetooth.CBUUID
+    public static var intermediateCuffPressureCBUUID: CoreBluetooth.CBUUID
+    public static var bloodPressureFeatureCBUUID: CoreBluetooth.CBUUID
+  }
+  public func readData(characteristic: CoreBluetooth.CBCharacteristic)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension MediasanaBU575 {
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+}
+@objc @_inheritsConvenienceInitializers public class HuhMiddleware : ObjectiveC.NSObject {
+  public static func textInfo(from characteristic: CoreBluetooth.CBCharacteristic) -> Swift.String
+  public static func batteryLevel(from characteristic: CoreBluetooth.CBCharacteristic) -> Swift.Int
+  public static func heartRate(from characteristic: CoreBluetooth.CBCharacteristic) -> Swift.Int
+  public static func weight(from characteristic: CoreBluetooth.CBCharacteristic) -> Swift.Float
+  public static func values(from data: Foundation.Data) -> [Swift.Int]
+  public static func toInt32Le(_ offset: Swift.Int, _ value: Swift.Int) -> Foundation.Data
+  public static func fromUnsignedInt16Le(_ data: Foundation.Data, _ offset: Swift.Int) -> Swift.Int
+  public static func fromUnsignedInt16Be(_ data: Foundation.Data, _ offset: Swift.Int) -> Swift.Int
+  public static func fromUnsignedInt32Le(_ data: Foundation.Data, _ offset: Swift.Int) -> Swift.Int
+  public static func decodeFeature(_ featureData: Foundation.Data, _ offset: Swift.Int) -> Swift.Float
+  @objc deinit
+  @objc override dynamic public init()
+}
+public struct HuhDeviceInformation {
+}
+public struct HuhDeviceInfoModel {
+}
+@objc @_inheritsConvenienceInitializers public class MediasanaBS444 : HuhFramework.HuhDevice {
+  override public class func identifier() -> Swift.String
+  public struct Features {
+  }
+  public enum Characteristics {
+    public static var mediasanaWeightMeasurementCBUUID: CoreBluetooth.CBUUID
+    public static var mediasanaBodyMeasurementCBUUID: CoreBluetooth.CBUUID
+    public static var mediasanaWEIGHTMEASUREMENT_SERVICE: CoreBluetooth.CBUUID
+  }
+  public func readData(characteristic: CoreBluetooth.CBCharacteristic)
+  public class func writeMagicNumber(onPeripheral peripheral: CoreBluetooth.CBPeripheral, forCharacteristic: CoreBluetooth.CBCharacteristic)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension MediasanaBS444 {
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didWriteValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+}
+public protocol HuhDeviceDelegate : ObjectiveC.NSObject {
+  func dataWasRead(data: [Swift.String : Any])
+  func fail(error: Swift.String)
+}
+@objc @_inheritsConvenienceInitializers public class HuhDevice : ObjectiveC.NSObject {
+  public class func identifier() -> Swift.String
+  weak public var delegate: HuhFramework.HuhDeviceDelegate?
+  public enum Services {
+    public static var deviceInformationService: CoreBluetooth.CBUUID
+  }
+  public var peripheral: CoreBluetooth.CBPeripheral?
+  public var deviceInformation: HuhFramework.HuhDeviceInformation {
+    get
+    set(value)
+  }
+  public func readValue(fromCharacteristic characteristic: CoreBluetooth.CBCharacteristic) -> Foundation.Data
+  public func readDeviceInfo(from characteristic: CoreBluetooth.CBCharacteristic, withLogging logging: Swift.Bool = false)
+  @objc deinit
+  @objc override dynamic public init()
+}
+extension HuhDevice : CoreBluetooth.CBPeripheralDelegate {
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverServices error: Swift.Error?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverCharacteristicsFor service: CoreBluetooth.CBService, error: Swift.Error?)
+}
+extension DateFormatter {
+  public static var huhDateFormatter: Foundation.DateFormatter
+  public static var huhLoggerDateFormatter: Foundation.DateFormatter
+}
+public enum DeviceType : Swift.Int {
+  case mediasanaBU575
+  case mediasanaBS444
+  case lifevitWEIGHT_SCALE
+  case lifevitBRACELET_AT500HR
+  case lifevitBABYTHERMOMETER
+  case lifevitOXIMETER
+  case lifevitTENSIO_BRACELET
+  case lifevitHEART
+  case lifevitTHERMOMETER
+  case lifevitBRACELET_AT250
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class HuhManager : ObjectiveC.NSObject {
+  public convenience init(withDelegate delegate: HuhFramework.HuhDelegate, defaultTimeout: Swift.Int = HuhConstants.Defaults.CBScanTimeout, andUIApplicationBluetoothCentralsKey lauchOptions: [UIKit.UIApplication.LaunchOptionsKey] = [], logToFile: Swift.Bool = true)
+  final public func stop(withDeviceType deviceType: HuhFramework.DeviceType)
+  final public func start(withDeviceType deviceType: HuhFramework.DeviceType)
+  @objc deinit
+  @objc override dynamic public init()
+}

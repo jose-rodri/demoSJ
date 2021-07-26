@@ -11,9 +11,18 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+      
+       print("PRESEtNR VISTA ")
+        
+       
     }
 
-
+    @IBAction func btnaction(_ sender: Any) {
+        
+//        let homeView = self.storyboard?.instantiateViewController(withIdentifier: "ContainerViewController") as! ContainerViewController
+//        homeView.modalTransitionStyle = .crossDissolve
+//        present(homeView, animated: true, completion: nil)
+    }
+    
 }
 
